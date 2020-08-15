@@ -11,6 +11,12 @@
 #include "CSelectView.h"
 #include "CDisplayView.h"
 
+#include "CUserDlg.h"
+#include "CSellDlg.h"
+#include "CInfoDlg.h"
+#include "CAddDlg.h"
+#include "CDelDlg.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -24,6 +30,21 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnApplicationLook)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnUpdateApplicationLook)
 	ON_WM_SETTINGCHANGE()
+
+	//ON_MESSAGE响应的是自定义消息
+	//产生NM_X消息，自动调用OnMyChange函数
+	ON_MESSAGE(NM_A, OnMyChange)
+	ON_MESSAGE(NM_B, OnMyChange)
+	ON_MESSAGE(NM_C, OnMyChange)
+	ON_MESSAGE(NM_D, OnMyChange)
+	ON_MESSAGE(NM_E, OnMyChange)
+
+	ON_COMMAND(ID_32776, &CMainFrame::On32776)
+	ON_COMMAND(ID_32771, &CMainFrame::On32771)
+	ON_COMMAND(ID_32772, &CMainFrame::On32772)
+	ON_COMMAND(ID_32773, &CMainFrame::On32773)
+	ON_COMMAND(ID_32774, &CMainFrame::On32774)
+	ON_COMMAND(ID_32777, &CMainFrame::On32777)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -55,7 +76,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("未能创建状态栏\n");
 		return -1;      // 未能创建
 	}
-	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
+	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators) / sizeof(UINT));
 
 	//设置图标，IDI_ICON_WIN为图标资源ID，此为WINAPI函数
 	SetClassLong(m_hWnd, GCL_HICON, (LONG)AfxGetApp()->LoadIconW(IDI_ICON_WIN));
@@ -73,7 +94,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	if( !CFrameWnd::PreCreateWindow(cs) )
+	if (!CFrameWnd::PreCreateWindow(cs))
 		return FALSE;
 	// TODO: 在此处通过修改
 	//  CREATESTRUCT cs 来修改窗口类或样式
@@ -99,7 +120,7 @@ BOOL CMainFrame::CreateDockingWindows()
 	CString strFileView;
 	bNameValid = strFileView.LoadString(IDS_FILE_VIEW);
 	ASSERT(bNameValid);
-	if (!m_wndFileView.Create(strFileView, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_FILEVIEW, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT| CBRS_FLOAT_MULTI))
+	if (!m_wndFileView.Create(strFileView, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_FILEVIEW, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
 	{
 		TRACE0("未能创建“文件视图”窗口\n");
 		return FALSE; // 未能创建
@@ -245,6 +266,84 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 }
 
 
+LRESULT CMainFrame::OnMyChange(WPARAM wParam, LPARAM lParam)
+{
+	CCreateContext   Context;
+	switch (wParam)
+	{
+	case NM_A:
+	{
+		//CUserDlg类需要包含头文件#include "UserDlg.h"
+		Context.m_pNewViewClass = RUNTIME_CLASS(CUserDlg);
+		Context.m_pCurrentFrame = this;
+		Context.m_pLastView = (CFormView*)m_spliter.GetPane(0, 1);
+		m_spliter.DeleteView(0, 1);
+		m_spliter.CreateView(0, 1, RUNTIME_CLASS(CUserDlg), CSize(600, 500), &Context);
+		CUserDlg* pNewView = (CUserDlg*)m_spliter.GetPane(0, 1);
+		m_spliter.RecalcLayout();
+		pNewView->OnInitialUpdate();
+		m_spliter.SetActivePane(0, 1);
+	}
+		break;
+	case NM_B:
+	{
+		Context.m_pNewViewClass = RUNTIME_CLASS(CSellDlg);
+		Context.m_pCurrentFrame = this;
+		Context.m_pLastView = (CFormView*)m_spliter.GetPane(0, 1);
+		m_spliter.DeleteView(0, 1);
+		m_spliter.CreateView(0, 1, RUNTIME_CLASS(CSellDlg), CSize(600, 500), &Context);
+		CSellDlg* pNewView = (CSellDlg*)m_spliter.GetPane(0, 1);
+		m_spliter.RecalcLayout();
+		pNewView->OnInitialUpdate();
+		m_spliter.SetActivePane(0, 1);
+	}
+		break;
+	case NM_C:
+	{
+		Context.m_pNewViewClass = RUNTIME_CLASS(CInfoDlg);
+		Context.m_pCurrentFrame = this;
+		Context.m_pLastView = (CFormView*)m_spliter.GetPane(0, 1);
+		m_spliter.DeleteView(0, 1);
+		m_spliter.CreateView(0, 1, RUNTIME_CLASS(CInfoDlg), CSize(600, 500), &Context);
+		CInfoDlg* pNewView = (CInfoDlg*)m_spliter.GetPane(0, 1);
+		m_spliter.RecalcLayout();
+		pNewView->OnInitialUpdate();
+		m_spliter.SetActivePane(0, 1);
+	}
+		break;
+	case NM_D:
+	{
+		Context.m_pNewViewClass = RUNTIME_CLASS(CAddDlg);
+		Context.m_pCurrentFrame = this;
+		Context.m_pLastView = (CFormView*)m_spliter.GetPane(0, 1);
+		m_spliter.DeleteView(0, 1);
+		m_spliter.CreateView(0, 1, RUNTIME_CLASS(CAddDlg), CSize(600, 500), &Context);
+		CAddDlg* pNewView = (CAddDlg*)m_spliter.GetPane(0, 1);
+		m_spliter.RecalcLayout();
+		pNewView->OnInitialUpdate();
+		m_spliter.SetActivePane(0, 1);
+	}
+		break;
+	case NM_E:
+	{
+		Context.m_pNewViewClass = RUNTIME_CLASS(CDelDlg);
+		Context.m_pCurrentFrame = this;
+		Context.m_pLastView = (CFormView*)m_spliter.GetPane(0, 1);
+		m_spliter.DeleteView(0, 1);
+		m_spliter.CreateView(0, 1, RUNTIME_CLASS(CDelDlg), CSize(600, 500), &Context);
+		CDelDlg* pNewView = (CDelDlg*)m_spliter.GetPane(0, 1);
+		m_spliter.RecalcLayout();
+		pNewView->OnInitialUpdate();
+		m_spliter.SetActivePane(0, 1);
+	}
+		break;
+	default:
+		MessageBox(_T("error"));
+	}
+	return 0;
+
+}
+
 BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 {
 	// TODO: 在此添加专用代码和/或调用基类
@@ -266,4 +365,46 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	return TRUE;
 	//return CFrameWnd::OnCreateClient(lpcs, pContext);
 
+}
+
+
+void CMainFrame::On32776()
+{
+	// TODO: 在此添加命令处理程序代码
+	exit(0);
+}
+
+//个人信息
+void CMainFrame::On32771()
+{
+	// TODO: 在此添加命令处理程序代码
+	::PostMessage(AfxGetMainWnd()->GetSafeHwnd(), NM_A, (WPARAM)NM_A, (LPARAM)0);
+}
+
+
+void CMainFrame::On32772()
+{
+	// TODO: 在此添加命令处理程序代码
+	::PostMessage(AfxGetMainWnd()->GetSafeHwnd(), NM_B, (WPARAM)NM_B, (LPARAM)0);
+}
+
+
+void CMainFrame::On32773()
+{
+	// TODO: 在此添加命令处理程序代码
+	::PostMessage(AfxGetMainWnd()->GetSafeHwnd(), NM_C, (WPARAM)NM_C, (LPARAM)0);
+}
+
+
+void CMainFrame::On32774()
+{
+	// TODO: 在此添加命令处理程序代码
+	::PostMessage(AfxGetMainWnd()->GetSafeHwnd(), NM_D, (WPARAM)NM_D, (LPARAM)0);
+}
+
+
+void CMainFrame::On32777()
+{
+	// TODO: 在此添加命令处理程序代码
+	::PostMessage(AfxGetMainWnd()->GetSafeHwnd(), NM_E, (WPARAM)NM_E, (LPARAM)0);
 }

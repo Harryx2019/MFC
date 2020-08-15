@@ -47,7 +47,7 @@ BOOL CLoginDlg::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
-	m_user = TEXT("斧头帮帮主");	//用户名
+	m_user = TEXT("Admin");	//用户名
 	m_pwd = TEXT("123456");//密码
 	UpdateData(FALSE); //内容更新到对应的控件
 

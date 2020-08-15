@@ -183,11 +183,16 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CAddDlg.h" />
+    <ClInclude Include="CDelDlg.h" />
     <ClInclude Include="CDisplayView.h" />
+    <ClInclude Include="CInfoDlg.h" />
     <ClInclude Include="CInfoFile.h" />
     <ClInclude Include="ClassView.h" />
     <ClInclude Include="CLoginDlg.h" />
     <ClInclude Include="CSelectView.h" />
+    <ClInclude Include="CSellDlg.h" />
+    <ClInclude Include="CUserDlg.h" />
     <ClInclude Include="FileView.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MainFrm.h" />
@@ -202,11 +207,16 @@
     <ClInclude Include="ViewTree.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CAddDlg.cpp" />
+    <ClCompile Include="CDelDlg.cpp" />
     <ClCompile Include="CDisplayView.cpp" />
+    <ClCompile Include="CInfoDlg.cpp" />
     <ClCompile Include="CInfoFile.cpp" />
     <ClCompile Include="ClassView.cpp" />
     <ClCompile Include="CLoginDlg.cpp" />
     <ClCompile Include="CSelectView.cpp" />
+    <ClCompile Include="CSellDlg.cpp" />
+    <ClCompile Include="CUserDlg.cpp" />
     <ClCompile Include="FileView.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
@@ -236,6 +246,7 @@
     <Image Include="res\fileview_hc.bmp" />
     <Image Include="res\file_view.ico" />
     <Image Include="res\file_view_hc.ico" />
+    <Image Include="res\icon1.ico" />
     <Image Include="res\menuimages.bmp" />
     <Image Include="res\menuimages_hc.bmp" />
     <Image Include="res\output_wnd.ico" />
